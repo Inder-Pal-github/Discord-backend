@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
 const validator = require("express-joi-validation").createValidator();
-const authControllers = require("../controllers/authControllers");
+const authControllers = require("../controllers/auth/authControllers");
 const auth = require("../middlewares/auth")
 
 // Joi register validator schema

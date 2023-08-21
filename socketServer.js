@@ -1,5 +1,6 @@
 const { verfiyTokenSocket } = require("./middlewares/authSocket");
 const disconnectHandler = require("./socketHandlers/disconnectHandler");
+const serverStore = require("./serverStore");
 
 const newConnectionHandler = require("./socketHandlers/newConnectionHandler");
 
@@ -10,6 +11,8 @@ const registerSocketServer = (server)=>{
             methods:["GET","POST"]
         }
     })
+
+    serverStore.setSocketServerInstance(io);
 
     io.use((socket,next)=>{
         verfiyTokenSocket(socket,next);
