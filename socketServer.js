@@ -4,33 +4,43 @@ const serverStore = require("./serverStore");
 
 const newConnectionHandler = require("./socketHandlers/newConnectionHandler");
 
-const registerSocketServer = (server)=>{
-    const io = require("socket.io")(server,{
-        cors:{
-            origin:"*",
-            methods:["GET","POST"]
-        }
-    })
+const registerSocketServer = (server) => {
+  const io = require("socket.io")(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+    },
+  });
 
-    serverStore.setSocketServerInstance(io);
+  serverStore.setSocketServerInstance(io);
 
-    io.use((socket,next)=>{
-        verfiyTokenSocket(socket,next);
-    })
+  io.use((socket, next) => {
+    verfiyTokenSocket(socket, next);
+  });
 
-    io.on("connection",(socket)=>{
-        console.log("User connected: ",socket.id)
-        // console.log(socket.handshake.auth);
-        // new connection handler
-        newConnectionHandler(socket,io);
+  // online user emitter
+  const emitOnlineUser = () => {
+    const onlineUsers = serverStore.getOnlineUsers();
+    io.emit("online-users", { onlineUsers });
+  };
 
+  io.on("connection", (socket) => {
+    console.log("User connected: ", socket.id);
 
-        // Disconnect handler
-        socket.on("disconnect",()=>{
-            disconnectHandler(socket);
-        })
-    })
-}
+    // new connection handler
+    newConnectionHandler(socket, io);
+    emitOnlineUser();
+
+    // Disconnect handler
+    socket.on("disconnect", () => {
+      disconnectHandler(socket);
+    });
+  });
+  // interval to update online users every 8 seconds
+  setInterval(() => {
+    emitOnlineUser();
+  }, 10000);
+};
 module.exports = {
-    registerSocketServer
-}
+  registerSocketServer,
+};
