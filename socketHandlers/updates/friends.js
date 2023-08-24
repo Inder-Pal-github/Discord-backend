@@ -28,8 +28,7 @@ const updateFriends = async (userId) => {
   try {
     // find active connections of specific id.(online users);
     const receiverList = serverStore.getActiveConnections(userId);
-
-    if (receiverList > 0) {
+    if (receiverList.length > 0) {
       const user = await User.findById(userId, { _id: 1, friends: 1 }).populate(
         "friends",
         "_id username mail"
@@ -42,7 +41,7 @@ const updateFriends = async (userId) => {
             username: f.username,
           };
         });
-
+        // console.log(friendsList);
         // get io
         const io = serverStore.getSocketServerInstance();
         receiverList.forEach((receiverSocketId) => {
@@ -59,5 +58,5 @@ const updateFriends = async (userId) => {
 
 module.exports = {
   updateFriendsPendingInvitations,
-  updateFriends
+  updateFriends,
 };
