@@ -2,7 +2,10 @@ const { verfiyTokenSocket } = require("./middlewares/authSocket");
 const disconnectHandler = require("./socketHandlers/disconnectHandler");
 const serverStore = require("./serverStore");
 
+
 const newConnectionHandler = require("./socketHandlers/newConnectionHandler");
+const directMessageHandler = require("./socketHandlers/directMessageHandler");
+const directChatHistoryHandler = require("./socketHandlers/directChatHistoryHandler");
 
 const registerSocketServer = (server) => {
   const io = require("socket.io")(server, {
@@ -30,6 +33,17 @@ const registerSocketServer = (server) => {
     // new connection handler
     newConnectionHandler(socket, io);
     emitOnlineUser();
+
+    // listen for direct message
+    socket.on("direct-message",(data)=>{
+      directMessageHandler(socket,data);
+    })
+
+    // direct-chat-history
+    socket.on("direct-chat-history",(data)=>{
+      console.log("directchathistory backedn")
+      directChatHistoryHandler(socket,data);
+    })
 
     // Disconnect handler
     socket.on("disconnect", () => {

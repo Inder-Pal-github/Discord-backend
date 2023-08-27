@@ -14,7 +14,7 @@ const postLogin = async (req, res) => {
         { expiresIn: "24h" }
       );
       return res.status(200).json({
-        userDetails: { mail: user.mail, token: JWT_TOKEN, username: user.username },
+        userDetails: { mail: user.mail, token: JWT_TOKEN, username: user.username,_id:user._id },
       });
     }
     return res.status(400).send({ message: "Invalid email or password" });
