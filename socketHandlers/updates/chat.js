@@ -9,12 +9,12 @@ const updateChatHistory = async (
     path: "messages",
     model: "Message",
     populate: {
-      path: "authorId",
+      path: "author",
       model: "User",
       select: "username _id",
     },
   });
-  console.log(conversation);
+  console.log("messages-----",conversation);
   if (conversation) {
     const io = serverStore.getSocketServerInstance();
     if (toSpecifiedSocketId) {

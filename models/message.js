@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const messageSchema = mongoose.Schema({
-  authorId: {
+  author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
