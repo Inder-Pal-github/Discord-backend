@@ -5,7 +5,6 @@ const roomLeaveHandler = (socket, data) => {
   const { roomId } = data;
 
   const activeRoom = serverStore.getActiveRoom(roomId);
-
   if (activeRoom) {
     serverStore.leaveActionRoom(roomId, socket.id);
 
