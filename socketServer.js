@@ -9,6 +9,7 @@ const directChatHistoryHandler = require("./socketHandlers/directChatHistoryHand
 const roomCreateHandler  = require("./socketHandlers/roomCreateHandler");
 const roomJoinHandler = require('./socketHandlers/roomJoinHandler');
 const roomLeaveHandler = require("./socketHandlers/roomLeaveHandler")
+const roomInitalizeConnectionHandler = require("./socketHandlers/roomInitalizeConnectionHandler")
 
 const registerSocketServer = (server) => {
   const io = require("socket.io")(server, {
@@ -60,6 +61,11 @@ const registerSocketServer = (server) => {
     // leave room
     socket.on("room-leave",(data)=>{
       roomLeaveHandler(socket,data);
+    })
+
+    // webRTC conn initializer
+    socket.on("conn-init",(data)=>{
+      roomInitalizeConnectionHandler(socket,data)
     })
 
     // Disconnect handler
