@@ -10,6 +10,7 @@ const roomCreateHandler  = require("./socketHandlers/roomCreateHandler");
 const roomJoinHandler = require('./socketHandlers/roomJoinHandler');
 const roomLeaveHandler = require("./socketHandlers/roomLeaveHandler")
 const roomInitalizeConnectionHandler = require("./socketHandlers/roomInitalizeConnectionHandler")
+const roomSignalingDataHandler = require("./socketHandlers/roomSignalingDataHandler")
 
 const registerSocketServer = (server) => {
   const io = require("socket.io")(server, {
@@ -66,6 +67,11 @@ const registerSocketServer = (server) => {
     // webRTC conn initializer
     socket.on("conn-init",(data)=>{
       roomInitalizeConnectionHandler(socket,data)
+    })
+
+    // listen signal connection
+    socket.on("conn-signal",(data)=>{
+      roomSignalingDataHandler(socket,data);
     })
 
     // Disconnect handler

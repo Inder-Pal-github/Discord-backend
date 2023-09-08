@@ -69,9 +69,13 @@ const getActiveRooms = () => {
 
 const getActiveRoom = (roomId) => {
   const activeRoom = activeRooms.find((room) => room.roomId === roomId);
-  return {
-    ...activeRoom,
-  };
+  if (activeRoom) {
+    return {
+      ...activeRoom,
+    };
+  } else {
+    return null;
+  }
 };
 
 const joinActiveRoom = (roomId, newParcipant) => {
@@ -95,8 +99,8 @@ const leaveActionRoom = (roomId, participantSocketId) => {
     );
     // if participants in this active room > 0, the update the active rooms or otherwise remove the room
 
-    activeRooms = activeRooms.filter((room)=>room.roomId !== roomId);
-    if(copyActiveRoom.participants.length>0){
+    activeRooms = activeRooms.filter((room) => room.roomId !== roomId);
+    if (copyActiveRoom.participants.length > 0) {
       activeRooms.push(copyActiveRoom);
     }
   }
